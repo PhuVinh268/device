@@ -1,0 +1,165 @@
+<!DOCTYPE html> 
+  <html>
+   <head> 
+       <title>IOT</title> 
+       <meta name="viewport" content="width=device-width,user-scalable=0" charset="UTF-8">
+       <link rel="stylesheet" href="main.css">
+   </head>
+
+   <body> 
+
+<!-- Thiết lập -->
+     <div id="main">
+
+       <div id="container">  
+         <h1>IOT 123</h1> 
+         <div>Trạng thái LED trên device 1: <b><pan id="trangthaiD4"><pan></b></div>
+          <div>
+           <button class="bt_on" onclick="getdata('onD4')">ON</button>
+           <button class="bt_off" onclick="getdata('offD4')">OFF</button>
+         </div>
+   
+         <div>Trạng thái LED trên device 2: <b><pan id="trangthaiD4"><pan></b></div>
+           <div>
+            <button class="bt_on" onclick="getdata('onD4')">ON</button>
+            <button class="bt_off" onclick="getdata('offD4')">OFF</button>
+          </div>
+   
+         <div>Thiết lập thông tin Wifi kết nối</div>
+         <div>Nhập tên wifi: </div>
+         <div> <input id="ssid" placeholder="nhập wifi dô đây " required /> </div>
+         
+         <div>Password wifi: </div>
+         <div><input id="pass" placeholder="nhập pass dô đây" required /></div>
+   
+         <div>Địa chỉ IP: </div>
+         <div><input id="pass" placeholder="cmd ---> IPConfig" required /></div>
+       
+         <div>
+           <button class="bt_write" onclick="writeEEPROM()">WRITE</button>
+           <button class="bt_restart" onclick="restartESP()">RESTART</button>
+           <button class="bt_clear" onclick="clearEEPROM()">CLEAR</button>
+         </div>
+   
+         <div id>IP connected: <pan id="ipconnected"></pan></div>
+         <div id="reponsetext"></div>         
+        </div>
+     </div>
+      
+<!-- Device -->
+<div id="app">
+    <div id="app1">
+            <div id="device">       
+                <div id="ds18b20">
+                    <h1>DS18B20</h1>
+                    <label for="temp">Nhiệt độ</label>
+                    <input type="text" name="temp" id="temp">
+                </div>
+
+                <div id="mq2">
+                    <h1>MQ-2</h1>
+                    <label for="temp">Nồng độ khí CO</label>
+                    <input type="text" name="temp" id="temp">
+                      <br>
+                    <label for="temp">Nồng độ khí NO</label>
+                    <input type="text" name="temp" id="temp">
+                </div>
+            </div>  
+    </div>
+</div>
+
+    
+
+
+      <script>
+        //-----------Tạo đối tượng request----------------
+        function create_obj(){
+          td = navigator.appName;
+          if(td == "Microsoft Internet Explorer"){
+            obj = new ActiveXObject("Microsoft.XMLHTTP");
+          }else{
+            obj = new XMLHttpRequest();
+          }
+          return obj;
+        }
+        var xhttp = create_obj();
+        //------------------------------------------------
+        window.onload = function(){
+          xhttp.open("GET","/getIP",true);
+          xhttp.onreadystatechange = process_ip;//nhận reponse 
+          xhttp.send();
+        }
+        //-----------Kiểm tra response IP------------------
+        function process_ip(){
+          if(xhttp.readyState == 4 && xhttp.status == 200){
+            //------Updat data sử dụng javascript----------
+            ketqua = xhttp.responseText; 
+            document.getElementById("ipconnected").innerHTML=ketqua;       
+          }
+        }
+        //==============================================================
+        //-----------Thiết lập dữ liệu và gửi request ON/OFF D4---
+        function getdata(url){
+          xhttp.open("GET","/"+url,true);
+          xhttp.onreadystatechange = process_onofd4;//nhận reponse 
+          xhttp.send();
+        }
+        //-----------Kiểm tra response ON/OFF D4------------------
+        function process_onofd4(){
+          if(xhttp.readyState == 4 && xhttp.status == 200){
+            //------Updat data sử dụng javascript----------
+            ketqua = xhttp.responseText; 
+            document.getElementById("trangthaiD4").innerHTML=ketqua;       
+          }
+        }
+         //-----------Thiết lập dữ liệu và gửi request Status D4----
+        //---Ham update duu lieu tu dong---
+        var xhttp2 = create_obj();
+        setInterval(function() {
+          getstatusD4();
+        }, 1000);
+        function getstatusD4(){
+          xhttp2.open("GET","/getstatusD4",true);
+          xhttp2.onreadystatechange = process_statusd4;//nhận reponse 
+          xhttp2.send();
+        }
+        //-----------Kiểm tra response ON/OFF D4------------------
+        function process_statusd4(){
+          if(xhttp2.readyState == 4 && xhttp2.status == 200){
+            //------Updat data sử dụng javascript----------
+            ketqua = xhttp2.responseText; 
+            document.getElementById("trangthaiD4").innerHTML=ketqua;       
+          }
+        }
+        //===============================================================
+        //-----------Thiết lập dữ liệu và gửi request ssid và password---
+        function writeEEPROM(){
+          var ssid = document.getElementById("ssid").value;
+          var pass = document.getElementById("pass").value;
+          xhttp.open("GET","/writeEEPROM?ssid="+ssid+"&pass="+pass,true);
+          xhttp.onreadystatechange = process;//nhận reponse 
+          xhttp.send();
+        }
+        function clearEEPROM(){
+          xhttp.open("GET","/clearEEPROM",true);
+          xhttp.onreadystatechange = process;//nhận reponse 
+          xhttp.send();
+        }
+        function restartESP(){
+          xhttp.open("GET","/restartESP",true);
+          xhttp.onreadystatechange = process;//nhận reponse 
+          xhttp.send();
+        }
+        //-----------Kiểm tra response ------------------
+        function process(){
+          if(xhttp.readyState == 4 && xhttp.status == 200){
+            //------Updat data sử dụng javascript----------
+            ketqua = xhttp.responseText; 
+            document.getElementById("reponsetext").innerHTML=ketqua;       
+          }
+        }
+      </script>
+
+      
+   </body> 
+  </html>

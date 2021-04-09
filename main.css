@@ -1,0 +1,83 @@
+body {
+    text-align:center;
+}
+
+h1 {
+    color:#003399;
+}
+          
+a {
+    text-decoration: none;
+    color:#FFFFFF;
+}
+     
+#main {
+    position: relative;
+}
+
+#container {
+    position: fixed;
+    top: 44%;
+    left: 23%;
+    transform: translate(-50%,-50%);
+    padding: 16px;
+    width: 30%;
+    border: 24px solid #f1f1f1;
+    border-radius: 5%;
+}
+
+#app {
+    position: relative;
+}
+
+#app1 {
+    position: fixed;
+    top: 44%;
+    left: 73%;
+    transform: translate(-50%,-50%);
+    padding: 16px;
+    width: 30%;
+    border: 24px solid #f1f1f1;
+    border-radius: 5%;
+}
+
+.bt_on {
+    height:50px; 
+    width:100px; 
+    margin:10px 0;
+    background-color:#FF6600;
+    border-radius:5px;
+}
+          
+.bt_off {
+    height:50px; 
+    width:100px; 
+    margin:10px 0;
+    background-color:#00FF00;
+    border-radius:5px;
+}
+          
+.bt_write {
+    height:30px; 
+    width:70px; 
+    margin:10px 0;
+    background-color:#00FF00;
+    border-radius:5px;
+}
+          
+.bt_restart {
+    height:30px; 
+    width:70px; 
+    margin:10px 0;
+    background-color:#FF6600;
+    border-radius:5px;
+}
+          
+.bt_clear {
+    height:30px; 
+    width:70px; 
+    margin:10px 0;
+    background-color:#00FF00;
+    border-radius:5px;
+}
+
